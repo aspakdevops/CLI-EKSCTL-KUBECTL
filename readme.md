@@ -71,13 +71,15 @@ eksctl create cluster --name ashokit-cluster4 --region ap-south-1 --node-type t2
 eksctl delete cluster --name ashokit-cluster4 --region ap-south-1
 ```
 Create Service Account, Role & Assign that role, And create a secret for Service Account and geenrate a Token
-Creating Service Account
+Creating Service Account---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: jenkins
   namespace: webapps
-Create Role
+
+
+Create Role--->
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -116,7 +118,9 @@ rules:
       - serviceaccounts
       - services
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-Bind the role to service account
+
+Bind the role to service account -->
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -130,6 +134,7 @@ subjects:
 - namespace: webapps 
   kind: ServiceAccount
   name: jenkins 
+
 Generate token using service account in the namespace
 secret.yml----->
 apiVersion: v1
@@ -137,5 +142,6 @@ kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
   name: mysecretname
+  namespace: webapps
   annotations:
     kubernetes.io/service-account.name: jenkins
